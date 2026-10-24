@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Owner Login · Adityaraj Builders &amp; Developers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&family=Instrument+Serif&family=Noto+Sans+Devanagari:wght@600&display=swap">
+<style>
+  :root {
+    --bg:#0b111d; --bg2:#101828; --surface:#151f33; --surface2:#1a2740;
+    --ink:#f3efe6; --muted:#b4bccb; --line:rgba(243,239,230,.14);
+    --accent:#f2a63b; --accent-ink:#1a1105; --blue:#7fb0ea; --red:#e0483e; --green:#7cc24a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Hanken Grotesk', system-ui, sans-serif;
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; padding: 24px;
+    background-image: linear-gradient(rgba(127,176,234,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(127,176,234,.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .card {
+    width: 100%; max-width: 440px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 20px; padding: 36px 30px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+  }
+  .logo-box { text-align: center; margin-bottom: 24px; }
+  .logo-box img { max-height: 70px; width: auto; }
+  h1 { font-family: 'Instrument Serif', Georgia, serif; font-size: 32px; margin: 0 0 6px; font-weight: 400; text-align: center; color: #fff; }
+  .sub { text-align: center; color: var(--muted); font-size: 14px; margin: 0 0 26px; }
+  .err { background: rgba(224,72,62,.15); border: 1px solid var(--red); color: #ff8f86; padding: 12px 14px; border-radius: 10px; font-size: 14px; margin-bottom: 20px; text-align: center; font-weight: 500; }
+  .field { margin-bottom: 20px; }
+  label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  input { width: 100%; min-height: 54px; padding: 12px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--bg2); color: var(--ink); font-size: 17px; font-family: inherit; }
+  input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(242,166,59,.2); }
+  .btn { width: 100%; min-height: 56px; border-radius: 14px; background: var(--accent); color: var(--accent-ink); font-size: 17px; font-weight: 700; border: 0; cursor: pointer; transition: transform 0.15s, box-shadow 0.2s; margin-top: 10px; }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(242,166,59,.35); }
+  .hint { margin-top: 24px; padding: 14px; border-radius: 12px; background: var(--bg2); border: 1px dashed var(--line); font-size: 13px; color: var(--muted); text-align: center; }
+  .hint b { color: var(--accent); }
+  .back { display: block; text-align: center; margin-top: 20px; font-size: 14px; color: var(--blue); text-decoration: none; }
+  .back:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo-box">
+      <img src="/assets/aistudio/Glossy_3D_Marathi_Real_Estate_Logo_d7948daa.png" alt="Adityaraj Builders" onerror="this.src='/adityaraj-logo.png'">
+    </div>
+    <h1>Owner Login</h1>
+    <p class="sub">Adityaraj Builders &amp; Developers · Website Dashboard</p>
+
+    <div class="err">__ERROR_MESSAGE__</div>
+
+    <form method="POST" action="/owner/login/">
+      <!--CSRF_FIELD-->
+      <div class="field">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required autocomplete="username" placeholder="Username">
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn">Log In to Dashboard</button>
+    </form>
+
+
+
+    <a href="/" class="back">← Back to Public Website</a>
+  </div>
+</body>
+</html>

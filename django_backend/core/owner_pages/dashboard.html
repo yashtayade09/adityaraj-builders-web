@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Owner Dashboard · Adityaraj Builders &amp; Developers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif&family=Noto+Sans+Devanagari:wght@600&display=swap">
+<style>
+:root {
+  --bg:#0b111d; --bg2:#101828; --surface:#151f33; --surface2:#1a2740;
+  --ink:#f3efe6; --muted:#b4bccb; --line:rgba(243,239,230,.14); --line-strong:rgba(243,239,230,.3);
+  --accent:#f2a63b; --accent-ink:#1a1105; --blue:#7fb0ea; --red:#e0483e; --green:#7cc24a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  font-size: 16px; line-height: 1.6;
+  background-image: linear-gradient(rgba(127,176,234,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(127,176,234,.05) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+a { color: inherit; text-decoration: none; }
+
+/* Top Header */
+.top-bar {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(16,24,40,.94); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line); padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.brand-area { display: flex; align-items: center; gap: 14px; }
+.brand-area img { height: 48px; width: auto; }
+.brand-title { font-weight: 700; font-size: 18px; color: #fff; line-height: 1.2; }
+.brand-sub { font-size: 12px; color: var(--accent); font-family: 'IBM Plex Mono', monospace; }
+.top-actions { display: flex; align-items: center; gap: 12px; }
+
+/* Big simple navigation buttons */
+.nav-tabs {
+  background: var(--bg2); border-bottom: 1px solid var(--line);
+  padding: 10px 20px; display: flex; gap: 8px; overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 50px; padding: 0 20px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+  color: var(--muted); font-size: 15px; font-weight: 600;
+  cursor: pointer; white-space: nowrap; transition: all 0.2s;
+}
+.tab-btn:hover { color: #fff; border-color: var(--line-strong); background: var(--surface2); }
+.tab-btn.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); box-shadow: 0 4px 16px rgba(242,166,59,.3); }
+
+/* Main Container */
+.container { max-width: 1240px; margin: 0 auto; padding: 28px 20px 80px; }
+
+/* Summary Cards (Home) */
+.summary-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px; margin-bottom: 34px;
+}
+.summary-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 18px; padding: 24px; cursor: pointer;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.summary-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+.card-num { font-size: 44px; font-weight: 700; line-height: 1; margin: 12px 0 6px; font-family: 'Instrument Serif', Georgia, serif; }
+.card-label { font-size: 14px; font-weight: 600; color: #fff; }
+.card-hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* Section Panels */
+.panel { display: none; }
+.panel.active { display: block; }
+
+.section-head {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: 16px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--line);
+}
+.section-title { font-size: 28px; font-family: 'Instrument Serif', Georgia, serif; margin: 0; color: #fff; font-weight: 400; }
+.section-desc { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+/* Action Buttons */
+.btn-main {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 48px; padding: 0 22px; border-radius: 12px;
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 700; font-size: 15px; border: 0; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.2s;
+}
+.btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(242,166,59,.35); }
+.btn-sec {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 0 18px; border-radius: 10px;
+  background: var(--surface2); border: 1px solid var(--line-strong);
+  color: var(--ink); font-weight: 600; font-size: 14px; cursor: pointer;
+}
+.btn-sec:hover { border-color: var(--accent); color: var(--accent); }
+.btn-green { background: #22c55e; color: #052e16; }
+.btn-green:hover { background: #16a34a; box-shadow: 0 8px 20px rgba(34,197,94,.35); }
+.btn-red { background: rgba(224,72,62,.2); border: 1px solid var(--red); color: #ff8f86; }
+.btn-red:hover { background: var(--red); color: #fff; }
+
+/* Filter Chips */
+.filter-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.filter-chip {
+  min-height: 38px; padding: 0 16px; border-radius: 99px;
+  background: var(--surface); border: 1px solid var(--line);
+  color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.filter-chip.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* Enquiry Cards / Rows */
+.item-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 16px; padding: 22px; margin-bottom: 16px;
+  transition: border-color 0.2s;
+}
+.item-card:hover { border-color: var(--line-strong); }
+.item-header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.item-name { font-size: 18px; font-weight: 700; color: #fff; }
+.item-meta { display: flex; flex-wrap: wrap; gap: 14px; font-size: 13px; color: var(--muted); margin-bottom: 12px; font-family: 'IBM Plex Mono', monospace; }
+.item-meta span b { color: var(--ink); }
+.item-msg { background: var(--bg2); padding: 14px; border-radius: 10px; border-left: 3px solid var(--accent); font-size: 14px; color: #dfe5f0; margin-bottom: 16px; }
+.item-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+/* Status Badges */
+.badge {
+  display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 99px;
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.badge-new { background: rgba(242,166,59,.18); color: var(--accent); border: 1px solid var(--accent); }
+.badge-replied { background: rgba(127,176,234,.18); color: var(--blue); border: 1px solid var(--blue); }
+.badge-closed { background: rgba(124,194,74,.18); color: var(--green); border: 1px solid var(--green); }
+.badge-pending { background: rgba(224,72,62,.18); color: #ff8f86; border: 1px solid var(--red); }
+
+/* Modal & WhatsApp Reply Sheet */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 99;
+  background: rgba(5,8,14,.78); backdrop-filter: blur(6px);
+  padding: 20px; align-items: center; justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--surface); border: 1px solid var(--line-strong);
+  border-radius: 20px; width: 100%; max-width: 580px; max-height: 90vh;
+  overflow-y: auto; padding: 30px; box-shadow: 0 25px 60px rgba(0,0,0,.6);
+  position: relative;
+}
+.modal-close {
+  position: absolute; top: 18px; right: 18px; width: 36px; height: 36px;
+  border-radius: 50%; border: 1px solid var(--line); background: var(--bg2);
+  color: var(--ink); font-size: 20px; cursor: pointer; display: grid; place-items: center;
+}
+.modal-close:hover { border-color: var(--accent); color: var(--accent); }
+
+/* Form Elements */
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 6px; }
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%; min-height: 48px; padding: 10px 14px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--bg2); color: var(--ink);
+  font-family: inherit; font-size: 15px;
+}
+.form-group textarea { min-height: 100px; resize: vertical; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+  outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(242,166,59,.18);
+}
+.quick-replies { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.qr-btn { font-size: 12px; padding: 6px 10px; border-radius: 8px; background: var(--bg2); border: 1px solid var(--line); color: var(--muted); cursor: pointer; }
+.qr-btn:hover { color: #fff; border-color: var(--accent); }
+.wa-notice {
+  background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.3);
+  border-radius: 10px; padding: 12px; font-size: 13px; color: #86efac; margin: 14px 0;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.toast {
+  position: fixed; bottom: 24px; right: 24px; z-index: 100;
+  background: var(--accent); color: var(--accent-ink); padding: 14px 22px;
+  border-radius: 12px; font-weight: 700; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  display: none; animation: slideUp 0.3s ease-out;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+</style>
+</head>
+<body>
+
+<!-- Top Navigation Bar -->
+<header class="top-bar">
+  <div class="brand-area">
+    <img src="/assets/aistudio/Glossy_3D_Marathi_Real_Estate_Logo_d7948daa.png" alt="Logo" onerror="this.src='/adityaraj-logo.png'">
+    <div>
+      <div class="brand-title">Adityaraj Builders &amp; Developers</div>
+      <div class="brand-sub">Owner Easy Management Dashboard · Akola</div>
+    </div>
+  </div>
+  <div class="top-actions">
+    <a href="/" target="_blank" class="btn-sec" title="Open Public Website in new tab">
+      🌐 View Live Website
+    </a>
+    <a href="/owner/logout/" class="btn-sec btn-red" title="Log out safely">
+      🚪 Logout
+    </a>
+  </div>
+</header>
+
+<!-- Simple Large Navigation Tabs -->
+<nav class="nav-tabs" id="navTabs">
+  <button class="tab-btn active" data-tab="tab-home">🏠 Home</button>
+  <button class="tab-btn" data-tab="tab-enquiries">📩 Enquiries <span id="navNewEnqBadge" class="badge badge-new" style="display:none;margin-left:4px"></span></button>
+  <button class="tab-btn" data-tab="tab-projects">🏗️ Projects</button>
+  <button class="tab-btn" data-tab="tab-registrations">🚀 Upcoming Registrations</button>
+  <button class="tab-btn" data-tab="tab-reviews">⭐ Reviews</button>
+  <button class="tab-btn" data-tab="tab-gallery">🖼️ Gallery</button>
+  <button class="tab-btn" data-tab="tab-content">🏢 Website Details</button>
+  <button class="tab-btn" data-tab="tab-services">⚙️ Services</button>
+</nav>
+
+<div class="container">
+
+  <!-- 1. HOME TAB -->
+  <div class="panel active" id="tab-home">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Welcome, Owner</h2>
+        <div class="section-desc">Here is what is happening on your website today. Tap any box to manage.</div>
+      </div>
+      <div>
+        <button class="btn-main" onclick="switchTab('tab-enquiries')">View All Customer Enquiries</button>
+      </div>
+    </div>
+
+    <!-- Summary Cards (Clickable) -->
+    <div class="summary-grid">
+      <div class="summary-card" onclick="switchTab('tab-enquiries', 'New')">
+        <div>
+          <span class="badge badge-new">Needs Attention</span>
+          <div class="card-num" id="statNewEnq" style="color:var(--accent)">0</div>
+          <div class="card-label">New Customer Enquiries</div>
+        </div>
+        <div class="card-hint">Click to read &amp; call customers →</div>
+      </div>
+
+      <div class="summary-card" onclick="switchTab('tab-enquiries', 'New')">
+        <div>
+          <span class="badge badge-replied">WhatsApp Pending</span>
+          <div class="card-num" id="statWaitReply" style="color:var(--blue)">0</div>
+          <div class="card-label">Waiting for WhatsApp Reply</div>
+        </div>
+        <div class="card-hint">Click to send pre-filled WhatsApp →</div>
+      </div>
+
+      <div class="summary-card" onclick="switchTab('tab-projects', 'Active')">
+        <div>
+          <span class="badge" style="background:rgba(56,189,248,.15);color:#38bdf8">Under Construction</span>
+          <div class="card-num" id="statActiveProj" style="color:#38bdf8">0</div>
+          <div class="card-label">Active Ongoing Projects</div>
+        </div>
+        <div class="card-hint">Update progress % &amp; stages →</div>
+      </div>
+
+      <div class="summary-card" onclick="switchTab('tab-projects', 'Completed')">
+        <div>
+          <span class="badge badge-closed">Delivered</span>
+          <div class="card-num" id="statDoneProj" style="color:var(--green)">0</div>
+          <div class="card-label">Completed Projects</div>
+        </div>
+        <div class="card-hint">Manage delivered buildings →</div>
+      </div>
+
+      <div class="summary-card" onclick="switchTab('tab-registrations')">
+        <div>
+          <span class="badge" style="background:rgba(217,70,239,.15);color:#d946ef">Pre-Launch</span>
+          <div class="card-num" id="statUpcomingReg" style="color:#d946ef">0</div>
+          <div class="card-label">Upcoming Project Leads</div>
+        </div>
+        <div class="card-hint">People waiting for launch →</div>
+      </div>
+
+      <div class="summary-card" onclick="switchTab('tab-reviews', 'Pending')">
+        <div>
+          <span class="badge badge-pending">Approval Required</span>
+          <div class="card-num" id="statPendingRev" style="color:#ff8f86">0</div>
+          <div class="card-label">Reviews Waiting Approval</div>
+        </div>
+        <div class="card-hint">Approve or reject customer reviews →</div>
+      </div>
+    </div>
+
+    <!-- Latest Enquiries Preview -->
+    <div class="section-head" style="margin-top:40px">
+      <div>
+        <h3 class="section-title" style="font-size:24px">Recent Customer Inquiries</h3>
+        <div class="section-desc">Latest customers who filled the enquiry form on your website.</div>
+      </div>
+    </div>
+    <div id="homeRecentEnquiries"></div>
+  </div>
+
+  <!-- 2. ENQUIRIES TAB -->
+  <div class="panel" id="tab-enquiries">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Customer Enquiries</h2>
+        <div class="section-desc">Read messages, call customers, or open WhatsApp with an automatic pre-filled reply.</div>
+      </div>
+    </div>
+
+    <div class="filter-bar" id="enqFilterBar">
+      <button class="filter-chip active" data-filter="All" onclick="filterEnquiries('All')">All Enquiries</button>
+      <button class="filter-chip" data-filter="New" onclick="filterEnquiries('New')">New Only</button>
+      <button class="filter-chip" data-filter="Replied" onclick="filterEnquiries('Replied')">Replied on WhatsApp</button>
+      <button class="filter-chip" data-filter="Closed" onclick="filterEnquiries('Closed')">Closed Deals</button>
+    </div>
+
+    <div id="enquiriesList"></div>
+  </div>
+
+  <!-- 3. PROJECTS TAB -->
+  <div class="panel" id="tab-projects">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Project Management</h2>
+        <div class="section-desc">Add new buildings, update construction stages, and manage project photos.</div>
+      </div>
+      <div>
+        <button class="btn-main" onclick="openAddProjectModal()">+ Add New Project</button>
+      </div>
+    </div>
+
+    <div class="filter-bar" id="projFilterBar">
+      <button class="filter-chip active" data-filter="All" onclick="filterProjects('All')">All Projects</button>
+      <button class="filter-chip" data-filter="Completed" onclick="filterProjects('Completed')">Completed</button>
+      <button class="filter-chip" data-filter="Active" onclick="filterProjects('Active')">Active (Ongoing)</button>
+      <button class="filter-chip" data-filter="Upcoming" onclick="filterProjects('Upcoming')">Upcoming</button>
+    </div>
+
+    <div id="projectsList" style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(320px,1fr))"></div>
+  </div>
+
+  <!-- 4. UPCOMING REGISTRATIONS TAB -->
+  <div class="panel" id="tab-registrations">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Upcoming Project Registrations</h2>
+        <div class="section-desc">Customers who registered interest in your pre-launch projects. Call them or chat on WhatsApp.</div>
+      </div>
+    </div>
+    <div id="registrationsList"></div>
+  </div>
+
+  <!-- 5. REVIEWS TAB -->
+  <div class="panel" id="tab-reviews">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Customer Reviews Management</h2>
+        <div class="section-desc">Only reviews approved by you will show on the public website.</div>
+      </div>
+    </div>
+
+    <div class="filter-bar" id="revFilterBar">
+      <button class="filter-chip active" data-filter="Pending" onclick="filterReviews('Pending')">Waiting Approval (Pending)</button>
+      <button class="filter-chip" data-filter="Approved" onclick="filterReviews('Approved')">Approved &amp; Live</button>
+      <button class="filter-chip" data-filter="All" onclick="filterReviews('All')">All Reviews</button>
+    </div>
+
+    <div id="reviewsList"></div>
+  </div>
+
+  <!-- 6. GALLERY TAB -->
+  <div class="panel" id="tab-gallery">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Proprietor &amp; Site Photo Gallery</h2>
+        <div class="section-desc">Manage site photos that scroll smoothly on the public homepage.</div>
+      </div>
+      <div>
+        <button class="btn-main" onclick="openAddGalleryModal()">+ Add Photo to Gallery</button>
+      </div>
+    </div>
+    <div id="galleryList" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))"></div>
+  </div>
+
+  <!-- 7. WEBSITE DETAILS TAB -->
+  <div class="panel" id="tab-content">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Company &amp; Proprietor Details</h2>
+        <div class="section-desc">Update contact numbers, office address, and proprietor experience shown on your site.</div>
+      </div>
+      <div>
+        <button class="btn-main" onclick="saveCompanyDetails()">💾 Save Details to Website</button>
+      </div>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px">
+      <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+        <div class="form-group">
+          <label>Company Display Phone</label>
+          <input type="text" id="cfgPhoneDisplay">
+        </div>
+        <div class="form-group">
+          <label>Phone Link (For Call Now button)</label>
+          <input type="text" id="cfgPhoneLink" placeholder="+917242458899">
+        </div>
+        <div class="form-group">
+          <label>WhatsApp Number (Country code + number, no +)</label>
+          <input type="text" id="cfgWhatsApp" placeholder="919822012345">
+        </div>
+        <div class="form-group">
+          <label>Office Email Address</label>
+          <input type="email" id="cfgEmail">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Office Physical Address</label>
+        <textarea id="cfgAddress" rows="2"></textarea>
+      </div>
+
+      <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:24px;margin:28px 0 16px;color:var(--accent)">Proprietor Profile (About Section)</h3>
+      <div style="display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+        <div class="form-group">
+          <label>Proprietor Full Name</label>
+          <input type="text" id="cfgPropName">
+        </div>
+        <div class="form-group">
+          <label>Proprietor Role</label>
+          <input type="text" id="cfgPropRole">
+        </div>
+        <div class="form-group">
+          <label>Experience Years</label>
+          <input type="text" id="cfgPropExp">
+        </div>
+        <div class="form-group">
+          <label>Quality Focus</label>
+          <input type="text" id="cfgPropFocus">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Achievements &amp; Recognitions</label>
+        <input type="text" id="cfgPropAchieve">
+      </div>
+      <div class="form-group">
+        <label>Proprietor Personal Vision Quote</label>
+        <textarea id="cfgPropVision" rows="2"></textarea>
+      </div>
+
+      <div style="text-align:right;margin-top:20px">
+        <button class="btn-main" onclick="saveCompanyDetails()">💾 Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. SERVICES TAB -->
+  <div class="panel" id="tab-services">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title">Construction Services</h2>
+        <div class="section-desc">Manage services shown under the Scope of Work section.</div>
+      </div>
+      <div>
+        <button class="btn-main" onclick="openAddServiceModal()">+ Add New Service</button>
+      </div>
+    </div>
+    <div id="servicesList" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))"></div>
+  </div>
+
+</div>
+
+<!-- WHATSAPP REPLY MODAL SHEET (Required Workflow) -->
+<div class="modal-overlay" id="waReplyModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('waReplyModal')">&times;</button>
+    <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:26px;margin:0 0 4px;color:#fff">Reply on WhatsApp</h3>
+    <div style="color:var(--muted);font-size:14px;margin-bottom:18px">Clicking &quot;Open WhatsApp&quot; will prepare your message. You will review and manually press Send in WhatsApp.</div>
+
+    <div style="background:var(--bg2);padding:14px;border-radius:12px;margin-bottom:16px;font-size:14px">
+      <div>Customer: <strong id="waCustName" style="color:#fff"></strong></div>
+      <div style="margin-top:4px">Phone: <strong id="waCustPhone" style="color:var(--accent);font-family:monospace"></strong></div>
+      <div style="margin-top:4px">Project Interest: <span id="waCustProj" style="color:var(--blue)"></span></div>
+    </div>
+
+    <div class="form-group">
+      <label>Choose a Quick Template or Edit Message</label>
+      <div class="quick-replies">
+        <button type="button" class="qr-btn" onclick="applyTemplate(1)">1. Standard Welcome</button>
+        <button type="button" class="qr-btn" onclick="applyTemplate(2)">2. Schedule Call</button>
+        <button type="button" class="qr-btn" onclick="applyTemplate(3)">3. Site Visit Offer</button>
+        <button type="button" class="qr-btn" onclick="applyTemplate(4)">4. Share Estimate</button>
+      </div>
+      <textarea id="waMessageText" rows="5"></textarea>
+    </div>
+
+    <div class="wa-notice">
+      <span>💡</span>
+      <div>
+        <strong>Important:</strong> Opening WhatsApp does not send the message automatically. When WhatsApp opens on your phone or computer, you can verify everything and manually press Send.
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:20px">
+      <button type="button" class="btn-sec" onclick="closeModal('waReplyModal')">Cancel</button>
+      <button type="button" class="btn-main btn-green" onclick="executeWhatsAppSend()">
+        📱 Open WhatsApp Now
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT PROJECT MODAL -->
+<div class="modal-overlay" id="projectModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('projectModal')">&times;</button>
+    <h3 id="projectModalTitle" style="font-family:'Instrument Serif',Georgia,serif;font-size:26px;margin:0 0 16px;color:#fff">Add Project</h3>
+    <form id="projectForm" onsubmit="handleProjectSubmit(event)">
+      <input type="hidden" id="projId">
+      <div class="form-group">
+        <label>Project Name</label>
+        <input type="text" id="projName" required placeholder="e.g. Adityaraj Heights">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label>Location</label>
+          <input type="text" id="projLocation" required placeholder="e.g. Civil Lines, Akola">
+        </div>
+        <div class="form-group">
+          <label>Project Type</label>
+          <input type="text" id="projType" required placeholder="e.g. Luxury 3 BHK">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label>Category</label>
+          <select id="projCategory">
+            <option value="Residential">Residential</option>
+            <option value="Commercial">Commercial</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="projStatus" onchange="toggleProjectStatusFields()">
+            <option value="Completed">Completed</option>
+            <option value="Active">Active (Ongoing)</option>
+            <option value="Upcoming">Upcoming (Pre-Launch)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Completed Specific -->
+      <div id="grpCompleted" class="form-group">
+        <label>Completion Year</label>
+        <input type="text" id="projYear" placeholder="2024">
+      </div>
+
+      <!-- Active Specific -->
+      <div id="grpActive" style="display:none;grid-template-columns:1fr 1fr;gap:12px">
+        <div class="form-group">
+          <label>Progress Percentage (0–100%)</label>
+          <input type="number" id="projProgress" min="0" max="100" value="50">
+        </div>
+        <div class="form-group">
+          <label>Current Construction Stage</label>
+          <select id="projStage">
+            <option value="Foundation">Foundation</option>
+            <option value="Structure">Structure</option>
+            <option value="Brickwork">Brickwork</option>
+            <option value="Finishing">Finishing</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Upcoming Specific -->
+      <div id="grpUpcoming" class="form-group" style="display:none">
+        <label>Expected Launch Time</label>
+        <input type="text" id="projLaunchWhen" placeholder="e.g. Q1 2027">
+      </div>
+
+      <div class="form-group">
+        <label>Project Description</label>
+        <textarea id="projDesc" rows="3" placeholder="Plot area, built-up specifications, amenities..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Cover Photo (choose from computer, or paste a link)</label>
+        <input type="text" id="projCoverImage" placeholder="https://... or /assets/...">
+        <div style="margin-top:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <button type="button" class="btn-sec" onclick="choosePhoto('projCoverImage', this)">📷 Choose photo from computer</button>
+          <span class="photo-status" style="font-size:13px;color:var(--muted)"></span>
+        </div>
+        <img class="photo-preview" alt="" style="display:none;margin-top:10px;max-height:110px;border-radius:10px;border:1px solid var(--line)">
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+        <button type="button" class="btn-sec" onclick="closeModal('projectModal')">Cancel</button>
+        <button type="submit" class="btn-main">Save Project</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ADD GALLERY MODAL -->
+<div class="modal-overlay" id="galleryModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('galleryModal')">&times;</button>
+    <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:26px;margin:0 0 16px;color:#fff">Add Gallery Photo</h3>
+    <form onsubmit="handleGallerySubmit(event)">
+      <div class="form-group">
+        <label>Photo Caption / Title</label>
+        <input type="text" id="galTitle" required placeholder="e.g. Slab casting supervision at Akola">
+      </div>
+      <div class="form-group">
+        <label>Photo (choose from computer, or paste a link)</label>
+        <input type="text" id="galImage" placeholder="Image URL (leave blank for drawing vector icon)">
+        <div style="margin-top:10px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <button type="button" class="btn-sec" onclick="choosePhoto('galImage', this)">📷 Choose photo from computer</button>
+          <span class="photo-status" style="font-size:13px;color:var(--muted)"></span>
+        </div>
+        <img class="photo-preview" alt="" style="display:none;margin-top:10px;max-height:110px;border-radius:10px;border:1px solid var(--line)">
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+        <button type="button" class="btn-sec" onclick="closeModal('galleryModal')">Cancel</button>
+        <button type="submit" class="btn-main">Add to Gallery</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ADD SERVICE MODAL -->
+<div class="modal-overlay" id="serviceModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('serviceModal')">&times;</button>
+    <h3 style="font-family:'Instrument Serif',Georgia,serif;font-size:26px;margin:0 0 16px;color:#fff">Add / Edit Service</h3>
+    <form onsubmit="handleServiceSubmit(event)">
+      <input type="hidden" id="srvId">
+      <div class="form-group">
+        <label>Service Title</label>
+        <input type="text" id="srvTitle" required placeholder="e.g. Residential Construction">
+      </div>
+      <div class="form-group">
+        <label>Scope / Tag</label>
+        <input type="text" id="srvTag" required placeholder="e.g. Villas · Bungalows · Buildings">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="srvDesc" rows="3" required placeholder="Describe what is included in this service..."></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+        <button type="button" class="btn-sec" onclick="closeModal('serviceModal')">Cancel</button>
+        <button type="submit" class="btn-main">Save Service</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast">Saved Successfully!</div>
+
+<script>
+
+// ---- Photo upload (works with Django and Node backends) ----
+function choosePhoto(inputId, btn) {
+  const wrap = btn.parentElement.parentElement;
+  const status = wrap.querySelector('.photo-status');
+  const preview = wrap.querySelector('.photo-preview');
+  const picker = document.createElement('input');
+  picker.type = 'file';
+  picker.accept = 'image/png,image/jpeg,image/webp,image/gif,image/*';
+  picker.style.display = 'none';
+  document.body.appendChild(picker);
+  picker.onchange = async function () {
+    const file = picker.files && picker.files[0];
+    if (!file) return;
+    status.textContent = 'Uploading...';
+    btn.disabled = true;
+    try {
+      const dataUrl = await shrinkImage(file);
+      const res = await fetch('/api/owner/upload', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: file.name, data: dataUrl }),
+      });
+      const out = await res.json();
+      if (!res.ok) throw new Error(out.error || 'Upload failed');
+      document.getElementById(inputId).value = out.url;
+      preview.src = out.url;
+      preview.style.display = 'block';
+      status.textContent = 'Photo uploaded. Now press Save.';
+    } catch (err) {
+      status.textContent = 'Could not upload: ' + err.message;
+    }
+    btn.disabled = false;
+    picker.remove();
+  };
+  picker.click();
+}
+
+function shrinkImage(file) {
+  // Big phone photos are resized (max 1600px) so the upload is fast.
+  return new Promise(function (resolve, reject) {
+    const reader = new FileReader();
+    reader.onerror = function () { reject(new Error('Could not read the file')); };
+    reader.onload = function () {
+      if (file.type === 'image/gif') { resolve(reader.result); return; }
+      const img = new Image();
+      img.onerror = function () { reject(new Error('This is not a valid image')); };
+      img.onload = function () {
+        const max = 1600;
+        const k = Math.min(1, max / Math.max(img.width, img.height));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.width * k);
+        c.height = Math.round(img.height * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        resolve(c.toDataURL('image/jpeg', 0.86));
+      };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// State Store
+let dbData = null;
+let currentEnqFilter = 'All';
+let currentProjFilter = 'All';
+let currentRevFilter = 'Pending';
+let activeEnqForWa = null;
+
+async function loadAllData() {
+  try {
+    const res = await fetch('/api/owner/data');
+    if (res.status === 401) {
+      window.location.href = '/owner/login/';
+      return;
+    }
+    dbData = await res.json();
+    renderAll();
+  } catch (e) {
+    console.error('Failed to load dashboard data:', e);
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  setTimeout(() => { t.style.display = 'none'; }, 3000);
+}
+
+function switchTab(tabId, subFilter) {
+  document.querySelectorAll('.tab-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.tab === tabId);
+  });
+  document.querySelectorAll('.panel').forEach(p => {
+    p.classList.toggle('active', p.id === tabId);
+  });
+  if (tabId === 'tab-enquiries' && subFilter) {
+    filterEnquiries(subFilter);
+  } else if (tabId === 'tab-projects' && subFilter) {
+    filterProjects(subFilter);
+  } else if (tabId === 'tab-reviews' && subFilter) {
+    filterReviews(subFilter);
+  }
+}
+
+document.getElementById('navTabs').addEventListener('click', e => {
+  const b = e.target.closest('.tab-btn');
+  if (b) switchTab(b.dataset.tab);
+});
+
+function renderAll() {
+  if (!dbData) return;
+
+  // 1. Home stats
+  const newEnq = dbData.enquiries.filter(e => e.status === 'New').length;
+  const waitReply = dbData.enquiries.filter(e => e.status === 'New').length;
+  const activeProj = dbData.projects.filter(p => p.status === 'Active').length;
+  const doneProj = dbData.projects.filter(p => p.status === 'Completed').length;
+  const upReg = dbData.registrations.length;
+  const pendRev = dbData.reviews.filter(r => r.status === 'Pending').length;
+
+  document.getElementById('statNewEnq').textContent = newEnq;
+  document.getElementById('statWaitReply').textContent = waitReply;
+  document.getElementById('statActiveProj').textContent = activeProj;
+  document.getElementById('statDoneProj').textContent = doneProj;
+  document.getElementById('statUpcomingReg').textContent = upReg;
+  document.getElementById('statPendingRev').textContent = pendRev;
+
+  const navBadge = document.getElementById('navNewEnqBadge');
+  if (newEnq > 0) {
+    navBadge.style.display = 'inline-flex';
+    navBadge.textContent = newEnq + ' NEW';
+  } else {
+    navBadge.style.display = 'none';
+  }
+
+  // Home recent enquiries preview
+  const recent = [...dbData.enquiries].sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 5);
+  document.getElementById('homeRecentEnquiries').innerHTML = recent.map(renderEnquiryCard).join('');
+
+  // 2. Enquiries list
+  renderEnquiriesList();
+
+  // 3. Projects list
+  renderProjectsList();
+
+  // 4. Registrations
+  renderRegistrationsList();
+
+  // 5. Reviews
+  renderReviewsList();
+
+  // 6. Gallery
+  renderGalleryList();
+
+  // 7. Company Details Form
+  const c = dbData.company;
+  document.getElementById('cfgPhoneDisplay').value = c.phoneDisplay || '';
+  document.getElementById('cfgPhoneLink').value = c.phoneLink || '';
+  document.getElementById('cfgWhatsApp').value = c.whatsapp || '';
+  document.getElementById('cfgEmail').value = c.email || '';
+  document.getElementById('cfgAddress').value = c.address || '';
+  document.getElementById('cfgPropName').value = c.proprietorName || '';
+  document.getElementById('cfgPropRole').value = c.proprietorRole || '';
+  document.getElementById('cfgPropExp').value = c.proprietorExp || '';
+  document.getElementById('cfgPropFocus').value = c.proprietorFocus || '';
+  document.getElementById('cfgPropAchieve').value = c.proprietorAchieve || '';
+  document.getElementById('cfgPropVision').value = c.proprietorVision || '';
+
+  // 8. Services list
+  renderServicesList();
+}
+
+// Enquiry Card Renderer
+function renderEnquiryCard(e) {
+  const badgeCls = e.status === 'New' ? 'badge-new' : e.status === 'Replied' ? 'badge-replied' : 'badge-closed';
+  const cleanPhone = (e.phone || '').replace(/[^0-9]/g, '');
+  return `
+    <div class="item-card">
+      <div class="item-header">
+        <div>
+          <span class="badge ${badgeCls}">${e.status}</span>
+          <span class="item-name" style="margin-left:8px">${e.name}</span>
+        </div>
+        <span style="font-size:12px;color:var(--muted);font-family:monospace">
+          ${new Date(e.createdAt).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' })}
+        </span>
+      </div>
+      <div class="item-meta">
+        <span>Phone: <b>${e.phone}</b></span>
+        ${e.email ? `<span>Email: <b>${e.email}</b></span>` : ''}
+        <span>Project: <b>${e.projectType}</b></span>
+        <span>Budget: <b>${e.budget}</b></span>
+      </div>
+      ${e.message ? `<div class="item-msg">${e.message}</div>` : ''}
+      ${e.replyNotes ? `<div style="font-size:12px;color:var(--blue);margin-bottom:12px">Reply Log: ${e.replyNotes}</div>` : ''}
+      <div class="item-actions">
+        <a href="tel:${cleanPhone}" class="btn-sec" title="Direct Phone Call">
+          📞 Call Customer
+        </a>
+        <button class="btn-main btn-green" onclick="openWhatsAppModal('${e.id}')">
+          💬 Reply on WhatsApp
+        </button>
+        <button class="btn-sec" onclick="copyPhone('${e.phone}')">
+          📋 Copy Number
+        </button>
+        ${e.status !== 'Closed' ? `
+          <button class="btn-sec" onclick="updateEnquiryStatus('${e.id}', 'Closed')">
+            ✓ Mark as Closed
+          </button>
+        ` : `
+          <button class="btn-sec" onclick="updateEnquiryStatus('${e.id}', 'New')">
+            ↺ Reopen Enquiry
+          </button>
+        `}
+      </div>
+    </div>
+  `;
+}
+
+function filterEnquiries(status) {
+  currentEnqFilter = status;
+  document.querySelectorAll('#enqFilterBar .filter-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.filter === status);
+  });
+  renderEnquiriesList();
+}
+
+function renderEnquiriesList() {
+  if (!dbData) return;
+  const filtered = dbData.enquiries.filter(e => currentEnqFilter === 'All' || e.status === currentEnqFilter);
+  const container = document.getElementById('enquiriesList');
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">No customer enquiries in this section.</div>';
+    return;
+  }
+  container.innerHTML = filtered.map(renderEnquiryCard).join('');
+}
+
+// Copy phone helper
+function copyPhone(num) {
+  navigator.clipboard.writeText(num);
+  showToast('Copied phone number: ' + num);
+}
+
+// WhatsApp Click-to-Chat Workflow
+function openWhatsAppModal(enqId) {
+  activeEnqForWa = dbData.enquiries.find(e => e.id === enqId);
+  if (!activeEnqForWa) return;
+
+  document.getElementById('waCustName').textContent = activeEnqForWa.name;
+  document.getElementById('waCustPhone').textContent = activeEnqForWa.phone;
+  document.getElementById('waCustProj').textContent = activeEnqForWa.projectType;
+
+  // Default pre-filled professional message
+  applyTemplate(1);
+
+  document.getElementById('waReplyModal').classList.add('open');
+}
+
+function applyTemplate(tplId) {
+  if (!activeEnqForWa) return;
+  const name = activeEnqForWa.name;
+  const proj = activeEnqForWa.projectType;
+  let text = '';
+  if (tplId === 1) {
+    text = `Hello ${name}, thank you for contacting Adityaraj Builders & Developers. We received your enquiry regarding ${proj}. We would be happy to discuss your requirements. Please let us know a convenient time to connect.`;
+  } else if (tplId === 2) {
+    text = `Hello ${name}, regarding your enquiry for ${proj} with Adityaraj Builders & Developers: Can we connect over a short phone call today to understand your plot and timeline?`;
+  } else if (tplId === 3) {
+    text = `Namaskar ${name} ji, we invite you to visit our site office in Akola to inspect our ongoing construction quality and structural drawings for ${proj}. When would be convenient for you?`;
+  } else if (tplId === 4) {
+    text = `Hello ${name}, thank you for reaching out to Adityaraj Builders. We are preparing a preliminary civil estimate for your ${proj}. Kindly share your plot size and location details.`;
+  }
+  document.getElementById('waMessageText').value = text;
+}
+
+async function executeWhatsAppSend() {
+  if (!activeEnqForWa) return;
+  const phone = activeEnqForWa.phone.replace(/[^0-9]/g, '');
+  const msg = document.getElementById('waMessageText').value.trim();
+
+  // Ensure country code 91 for India if not present
+  const fullPhone = phone.length === 10 ? '91' + phone : phone;
+  const waUrl = `https://wa.me/${fullPhone}?text=${encodeURIComponent(msg)}`;
+
+  // Log reply in backend and mark as Replied
+  await fetch(`/api/owner/enquiries/${activeEnqForWa.id}/reply`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message: msg, notes: 'WhatsApp opened with message' }),
+  });
+
+  closeModal('waReplyModal');
+  showToast('Opening WhatsApp with your message...');
+
+  // Open WhatsApp in new window
+  window.open(waUrl, '_blank');
+
+  // Reload data to reflect 'Replied' status
+  loadAllData();
+}
+
+async function updateEnquiryStatus(enqId, status) {
+  await fetch(`/api/owner/enquiries/${enqId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  });
+  showToast('Enquiry marked as ' + status);
+  loadAllData();
+}
+
+// Project Management
+function filterProjects(status) {
+  currentProjFilter = status;
+  document.querySelectorAll('#projFilterBar .filter-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.filter === status);
+  });
+  renderProjectsList();
+}
+
+function renderProjectsList() {
+  if (!dbData) return;
+  const filtered = dbData.projects.filter(p => currentProjFilter === 'All' || p.status === currentProjFilter);
+  const container = document.getElementById('projectsList');
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">No projects in this category.</div>';
+    return;
+  }
+  container.innerHTML = filtered.map(p => {
+    const isAct = p.status === 'Active';
+    const isUp = p.status === 'Upcoming';
+    return `
+      <div class="item-card" style="display:flex;flex-direction:column;justify-content:space-between">
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+            <div>
+              <span class="badge ${p.status==='Completed'?'badge-closed':p.status==='Active'?'badge-new':'badge-replied'}">${p.status}</span>
+              <span class="badge" style="margin-left:4px;background:var(--bg2);color:var(--muted)">${p.category}</span>
+            </div>
+          </div>
+          <h3 style="font-size:20px;font-weight:700;margin:0 0 4px;color:#fff">${p.name}</h3>
+          <div style="font-size:13px;color:var(--muted);margin-bottom:10px">${p.location} · ${p.type}</div>
+          <p style="font-size:14px;color:#cdd5e0;margin:0 0 14px">${p.description}</p>
+
+          ${isAct ? `
+            <div style="background:var(--bg2);padding:12px;border-radius:10px;margin-bottom:14px;font-size:13px">
+              <div style="display:flex;justify-content:space-between;font-weight:600">
+                <span>Progress: ${p.progress || 0}%</span>
+                <span style="color:var(--accent)">Stage: ${p.stage || 'Structure'}</span>
+              </div>
+              <div style="height:6px;background:var(--surface);border-radius:6px;overflow:hidden;margin-top:8px">
+                <div style="height:100%;width:${p.progress||0}%;background:var(--accent)"></div>
+              </div>
+            </div>
+          ` : ''}
+
+          ${isUp ? `
+            <div style="font-size:12px;color:var(--accent);margin-bottom:14px">
+              🚀 Launch Period: ${p.launchWhen || 'Coming Soon'}
+            </div>
+          ` : ''}
+        </div>
+
+        <div style="display:flex;gap:8px;border-top:1px solid var(--line);padding-top:14px">
+          <button class="btn-sec" style="flex:1" onclick="openEditProjectModal('${p.id}')">✏️ Edit</button>
+          <button class="btn-sec btn-red" onclick="deleteProject('${p.id}')">🗑️ Delete</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function openAddProjectModal() {
+  document.getElementById('projectModalTitle').textContent = 'Add New Project';
+  document.getElementById('projId').value = '';
+  document.getElementById('projName').value = '';
+  document.getElementById('projLocation').value = 'Akola';
+  document.getElementById('projType').value = 'Residential 2 & 3 BHK';
+  document.getElementById('projCategory').value = 'Residential';
+  document.getElementById('projStatus').value = 'Active';
+  document.getElementById('projYear').value = '2024';
+  document.getElementById('projProgress').value = '50';
+  document.getElementById('projStage').value = 'Structure';
+  document.getElementById('projLaunchWhen').value = 'Q1 2027';
+  document.getElementById('projDesc').value = '';
+  document.getElementById('projCoverImage').value = '';
+  toggleProjectStatusFields();
+  document.getElementById('projectModal').classList.add('open');
+}
+
+function openEditProjectModal(id) {
+  const p = dbData.projects.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('projectModalTitle').textContent = 'Edit Project: ' + p.name;
+  document.getElementById('projId').value = p.id;
+  document.getElementById('projName').value = p.name;
+  document.getElementById('projLocation').value = p.location;
+  document.getElementById('projType').value = p.type;
+  document.getElementById('projCategory').value = p.category;
+  document.getElementById('projStatus').value = p.status;
+  document.getElementById('projYear').value = p.year || '';
+  document.getElementById('projProgress').value = p.progress || 0;
+  document.getElementById('projStage').value = p.stage || 'Foundation';
+  document.getElementById('projLaunchWhen').value = p.launchWhen || '';
+  document.getElementById('projDesc').value = p.description || '';
+  document.getElementById('projCoverImage').value = p.coverImage || '';
+  toggleProjectStatusFields();
+  document.getElementById('projectModal').classList.add('open');
+}
+
+function toggleProjectStatusFields() {
+  const st = document.getElementById('projStatus').value;
+  document.getElementById('grpCompleted').style.display = st === 'Completed' ? 'block' : 'none';
+  document.getElementById('grpActive').style.display = st === 'Active' ? 'grid' : 'none';
+  document.getElementById('grpUpcoming').style.display = st === 'Upcoming' ? 'block' : 'none';
+}
+
+async function handleProjectSubmit(e) {
+  e.preventDefault();
+  const id = document.getElementById('projId').value;
+  const payload = {
+    name: document.getElementById('projName').value.trim(),
+    location: document.getElementById('projLocation').value.trim(),
+    type: document.getElementById('projType').value.trim(),
+    category: document.getElementById('projCategory').value,
+    status: document.getElementById('projStatus').value,
+    year: document.getElementById('projYear').value.trim(),
+    progress: parseInt(document.getElementById('projProgress').value) || 0,
+    stage: document.getElementById('projStage').value,
+    launchWhen: document.getElementById('projLaunchWhen').value.trim(),
+    description: document.getElementById('projDesc').value.trim(),
+    coverImage: document.getElementById('projCoverImage').value.trim(),
+  };
+
+  if (id) {
+    await fetch('/api/owner/projects/' + id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    showToast('Project updated successfully!');
+  } else {
+    await fetch('/api/owner/projects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    showToast('New project created!');
+  }
+
+  closeModal('projectModal');
+  loadAllData();
+}
+
+async function deleteProject(id) {
+  if (!confirm('Are you sure you want to delete this project? It will be removed from your website.')) return;
+  await fetch('/api/owner/projects/' + id, { method: 'DELETE' });
+  showToast('Project deleted');
+  loadAllData();
+}
+
+// Registrations
+function renderRegistrationsList() {
+  if (!dbData) return;
+  const container = document.getElementById('registrationsList');
+  if (dbData.registrations.length === 0) {
+    container.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">No pre-launch registrations yet.</div>';
+    return;
+  }
+  container.innerHTML = dbData.registrations.map(r => {
+    const clean = r.phone.replace(/[^0-9]/g, '');
+    const fullPhone = clean.length === 10 ? '91' + clean : clean;
+    const waUrl = `https://wa.me/${fullPhone}?text=${encodeURIComponent('Hello, thank you for registering interest in ' + r.projectName + ' with Adityaraj Builders Akola. We would like to share the upcoming project details.')}`;
+    return `
+      <div class="item-card">
+        <div class="item-header">
+          <div>
+            <span class="badge ${r.status==='New'?'badge-new':'badge-closed'}">${r.status}</span>
+            <span class="item-name" style="margin-left:8px">${r.projectName} Lead</span>
+          </div>
+          <span style="font-size:12px;color:var(--muted);font-family:monospace">${new Date(r.createdAt).toLocaleDateString()}</span>
+        </div>
+        <div class="item-meta">
+          <span>Customer Phone: <b>${r.phone}</b></span>
+          <span>Project: <b>${r.projectName}</b></span>
+        </div>
+        <div class="item-actions">
+          <a href="tel:${clean}" class="btn-sec">📞 Call Customer</a>
+          <a href="${waUrl}" target="_blank" class="btn-main btn-green">💬 Chat on WhatsApp</a>
+          ${r.status === 'New' ? `
+            <button class="btn-sec" onclick="updateRegStatus('${r.id}', 'Contacted')">Mark as Contacted</button>
+          ` : ''}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+async function updateRegStatus(id, status) {
+  await fetch('/api/owner/registrations/' + id, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  });
+  showToast('Lead updated');
+  loadAllData();
+}
+
+// Reviews
+function filterReviews(status) {
+  currentRevFilter = status;
+  document.querySelectorAll('#revFilterBar .filter-chip').forEach(c => {
+    c.classList.toggle('active', c.dataset.filter === status);
+  });
+  renderReviewsList();
+}
+
+function renderReviewsList() {
+  if (!dbData) return;
+  const filtered = dbData.reviews.filter(r => currentRevFilter === 'All' || r.status === currentRevFilter);
+  const container = document.getElementById('reviewsList');
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="padding:40px;text-align:center;color:var(--muted)">No customer reviews in this category.</div>';
+    return;
+  }
+  container.innerHTML = filtered.map(r => `
+    <div class="item-card">
+      <div class="item-header">
+        <div>
+          <span class="badge ${r.status==='Pending'?'badge-pending':'badge-closed'}">${r.status}</span>
+          <span class="item-name" style="margin-left:8px">${r.name}</span>
+          <span style="color:var(--accent);margin-left:8px">★ ${r.rating} / 5</span>
+        </div>
+        <span style="font-size:12px;color:var(--muted);font-family:monospace">${r.projectType}</span>
+      </div>
+      <p style="font-size:15px;color:#dfe5f0;margin:8px 0 16px">${r.message}</p>
+      <div class="item-actions">
+        ${r.status !== 'Approved' ? `
+          <button class="btn-main btn-green" onclick="setReviewStatus('${r.id}', 'Approved')">✓ Approve for Live Website</button>
+        ` : `
+          <button class="btn-sec" onclick="setReviewStatus('${r.id}', 'Hidden')">Hide from Website</button>
+        `}
+        ${r.status !== 'Rejected' ? `
+          <button class="btn-sec btn-red" onclick="setReviewStatus('${r.id}', 'Rejected')">Reject</button>
+        ` : ''}
+        <button class="btn-sec btn-red" onclick="deleteReview('${r.id}')">🗑️ Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function setReviewStatus(id, status) {
+  await fetch('/api/owner/reviews/' + id, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status }),
+  });
+  showToast('Review ' + status);
+  loadAllData();
+}
+
+async function deleteReview(id) {
+  if (!confirm('Permanently delete this review?')) return;
+  await fetch('/api/owner/reviews/' + id, { method: 'DELETE' });
+  showToast('Review deleted');
+  loadAllData();
+}
+
+// Gallery
+function renderGalleryList() {
+  if (!dbData) return;
+  const container = document.getElementById('galleryList');
+  container.innerHTML = dbData.gallery.map(g => `
+    <div class="item-card" style="text-align:center">
+      <div style="aspect-ratio:4/3;background:var(--bg2);border-radius:10px;margin-bottom:10px;display:grid;place-items:center;overflow:hidden">
+        ${g.image ? `<img src="${g.image}" style="width:100%;height:100%;object-fit:cover">` : `<div style="color:var(--accent);font-family:monospace;font-size:12px">📐 Drawing SVG #${g.artIndex}</div>`}
+      </div>
+      <div style="font-weight:700;color:#fff;margin-bottom:12px">${g.title}</div>
+      <button class="btn-sec btn-red" style="width:100%" onclick="deleteGalleryItem('${g.id}')">🗑️ Delete</button>
+    </div>
+  `).join('');
+}
+
+function openAddGalleryModal() {
+  document.getElementById('galTitle').value = '';
+  document.getElementById('galImage').value = '';
+  document.getElementById('galleryModal').classList.add('open');
+}
+
+async function handleGallerySubmit(e) {
+  e.preventDefault();
+  await fetch('/api/owner/gallery', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      title: document.getElementById('galTitle').value.trim(),
+      image: document.getElementById('galImage').value.trim(),
+    }),
+  });
+  closeModal('galleryModal');
+  showToast('Photo added to gallery!');
+  loadAllData();
+}
+
+async function deleteGalleryItem(id) {
+  if (!confirm('Remove this photo from the public gallery?')) return;
+  await fetch('/api/owner/gallery/' + id, { method: 'DELETE' });
+  showToast('Photo removed');
+  loadAllData();
+}
+
+// Company Details
+async function saveCompanyDetails() {
+  const payload = {
+    phoneDisplay: document.getElementById('cfgPhoneDisplay').value.trim(),
+    phoneLink: document.getElementById('cfgPhoneLink').value.trim(),
+    whatsapp: document.getElementById('cfgWhatsApp').value.trim(),
+    email: document.getElementById('cfgEmail').value.trim(),
+    address: document.getElementById('cfgAddress').value.trim(),
+    proprietorName: document.getElementById('cfgPropName').value.trim(),
+    proprietorRole: document.getElementById('cfgPropRole').value.trim(),
+    proprietorExp: document.getElementById('cfgPropExp').value.trim(),
+    proprietorFocus: document.getElementById('cfgPropFocus').value.trim(),
+    proprietorAchieve: document.getElementById('cfgPropAchieve').value.trim(),
+    proprietorVision: document.getElementById('cfgPropVision').value.trim(),
+  };
+
+  await fetch('/api/owner/company', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  showToast('Company & Proprietor details saved to live site!');
+  loadAllData();
+}
+
+// Services
+function renderServicesList() {
+  if (!dbData) return;
+  const container = document.getElementById('servicesList');
+  container.innerHTML = dbData.services.map(s => `
+    <div class="item-card">
+      <div style="font-size:12px;color:var(--accent);font-family:monospace;margin-bottom:4px">${s.tag}</div>
+      <h3 style="font-size:19px;font-weight:700;margin:0 0 6px;color:#fff">${s.title}</h3>
+      <p style="font-size:14px;color:var(--muted);margin:0 0 14px">${s.description}</p>
+      <div style="display:flex;gap:8px">
+        <button class="btn-sec" style="flex:1" onclick="openEditServiceModal('${s.id}')">✏️ Edit</button>
+        <button class="btn-sec btn-red" onclick="deleteService('${s.id}')">🗑️ Delete</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function openAddServiceModal() {
+  document.getElementById('srvId').value = '';
+  document.getElementById('srvTitle').value = '';
+  document.getElementById('srvTag').value = '';
+  document.getElementById('srvDesc').value = '';
+  document.getElementById('serviceModal').classList.add('open');
+}
+
+function openEditServiceModal(id) {
+  const s = dbData.services.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('srvId').value = s.id;
+  document.getElementById('srvTitle').value = s.title;
+  document.getElementById('srvTag').value = s.tag;
+  document.getElementById('srvDesc').value = s.description;
+  document.getElementById('serviceModal').classList.add('open');
+}
+
+async function handleServiceSubmit(e) {
+  e.preventDefault();
+  const id = document.getElementById('srvId').value;
+  const payload = {
+    title: document.getElementById('srvTitle').value.trim(),
+    tag: document.getElementById('srvTag').value.trim(),
+    description: document.getElementById('srvDesc').value.trim(),
+  };
+
+  if (id) {
+    await fetch('/api/owner/services/' + id, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    showToast('Service updated');
+  } else {
+    await fetch('/api/owner/services', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    showToast('New service added');
+  }
+
+  closeModal('serviceModal');
+  loadAllData();
+}
+
+async function deleteService(id) {
+  if (!confirm('Delete this service from the website?')) return;
+  await fetch('/api/owner/services/' + id, { method: 'DELETE' });
+  showToast('Service deleted');
+  loadAllData();
+}
+
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('open');
+}
+
+// Initial Load
+loadAllData();
+</script>
+</body>
+</html>

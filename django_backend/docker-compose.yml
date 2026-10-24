@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: adityaraj_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: adityaraj_db
+      POSTGRES_USER: adityaraj_user
+      POSTGRES_PASSWORD: adityaraj_secure_password_2026
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: ..
+      dockerfile: django_backend/Dockerfile
+    container_name: adityaraj_django
+    restart: always
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py create_owner &&
+             gunicorn --bind 0.0.0.0:8000 --workers 3 adityaraj_project.wsgi:application"
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-adityaraj-builders-dev-key-2026
+      - DATABASE_URL=postgres://adityaraj_user:adityaraj_secure_password_2026@db:5432/adityaraj_db
+      - INITIAL_OWNER_USERNAME=adityaraj_owner
+      - INITIAL_OWNER_PASSWORD=Adityaraj@2026
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
