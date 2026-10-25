@@ -93,6 +93,15 @@ export const Navbar: React.FC<NavbarProps> = ({ onReplayIntro }) => {
 
         {/* Action Controls: Replay Intro, Sound, Inquire */}
         <div className="hidden sm:flex items-center gap-3">
+          {/* Owner Dashboard Button */}
+          <a
+            href="/dashboard"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-900 border border-slate-700 hover:border-amber-500/50 text-xs font-mono text-slate-300 hover:text-amber-300 transition-all shadow-md"
+          >
+            <Building2 className="w-3.5 h-3.5 text-amber-400" />
+            <span>Owner Dashboard</span>
+          </a>
+
           {/* Replay Intro Animation Button */}
           <button
             onClick={onReplayIntro}

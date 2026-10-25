@@ -55,6 +55,20 @@ export const Footer: React.FC<FooterProps> = ({ onReplayIntro }) => {
             </ul>
           </div>
 
+          {/* Services Section */}
+          <div>
+            <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-white mb-4">
+              Services
+            </h4>
+            <ul className="space-y-2 text-xs">
+              <li className="hover:text-amber-400 transition-colors cursor-pointer">Luxury Residential</li>
+              <li className="hover:text-amber-400 transition-colors cursor-pointer">Commercial Complexes</li>
+              <li className="hover:text-amber-400 transition-colors cursor-pointer">Structural Auditing</li>
+              <li className="hover:text-amber-400 transition-colors cursor-pointer">Civil Consultancy</li>
+              <li className="hover:text-amber-400 transition-colors cursor-pointer">Project Management</li>
+            </ul>
+          </div>
+
           {/* Civil Engineering Specs */}
           <div>
             <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-white mb-4">
